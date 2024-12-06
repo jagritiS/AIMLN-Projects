@@ -1,5 +1,3 @@
-# topic_modeling_with_visualization.py
-
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -9,6 +7,7 @@ from gensim.models import LdaModel
 import pyLDAvis
 import pyLDAvis.gensim_models
 import logging
+import os
 
 # Download required NLTK data
 nltk.download('punkt')
@@ -66,10 +65,16 @@ def visualize_topics(lda_model, bow_corpus, dictionary):
     # Prepare the visualization
     vis = pyLDAvis.gensim_models.prepare(lda_model, bow_corpus, dictionary)
     
-    # Display the visualization in a Jupyter Notebook or save it as an HTML file
-    pyLDAvis.show(vis)
-    # To save the visualization to an HTML file:
-    # pyLDAvis.save_html(vis, 'lda_visualization.html')
+    # Save the visualization as an HTML file
+    pyLDAvis.save_html(vis, 'lda_visualization.html')
+
+    # Optionally, open the visualization HTML file in a browser (Windows)
+    if os.name == 'nt':  # For Windows, use os.system to open the file
+        os.system('start lda_visualization.html')
+    elif os.name == 'posix':  # For macOS/Linux
+        os.system('open lda_visualization.html')
+    
+    print("\nTopic visualization saved as 'lda_visualization.html'")
 
 def main():
     print("Topic Modeling using LDA (Latent Dirichlet Allocation)\n")
